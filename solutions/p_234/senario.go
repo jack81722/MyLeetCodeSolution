@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"strconv"
+)
+
 type ListNode struct {
 	Val  int
 	Next *ListNode
@@ -16,4 +21,15 @@ func NewList(nums ...int) *ListNode {
 		cur = cur.Next
 	}
 	return root
+}
+
+func (l *ListNode) String() string {
+	cur := l
+	str := strconv.Itoa(cur.Val)
+	cur = cur.Next
+	for cur != nil {
+		str += fmt.Sprintf(", %v", cur.Val)
+		cur = cur.Next
+	}
+	return str
 }
