@@ -8,55 +8,34 @@ func answerQueries(nums []int, queries []int) []int {
 	sort.Slice(nums, func(i, j int) bool {
 		return nums[i] < nums[j]
 	})
-	sums := make([]int, len(nums))
-	sums[0] = nums[0]
 	for i := 1; i < len(nums); i++ {
-		sums[i] = sums[i-1] + nums[i]
+		nums[i] += nums[i-1]
 	}
 	maxs := make([]int, len(queries))
 	for i, q := range queries {
-		maxs[i] = searchAndCount(0, q, nums, sums)
-		for j := 1; j < len(nums); j++ {
-			count := searchAndCount(j, q, nums, sums)
-			if maxs[i] < count {
-				maxs[i] = count
-			}
-		}
+		maxs[i] = binarySearch(q, nums) + 1
 	}
 	return maxs
 }
 
-func searchAndCount(index, limit int, nums, sums []int) int {
-	if nums[index] > limit {
-		return 0
-	}
-	if nums[index] == limit {
-		return 1
-	}
-	l := index
+func binarySearch(query int, nums []int) int {
+	l := 0
 	r := len(nums)
-	mid := (l + r) / 2
+	var mid int
 	for l < r {
 		mid = (l + r) / 2
-		sub := sub(index, mid, nums, sums)
-		if sub == limit {
-			break
+		if nums[mid] == query {
+			return mid
 		}
-		if sub > limit {
-			r = mid
-			continue
-		}
-		if sub < limit {
+		if nums[mid] < query {
 			l = mid + 1
-			continue
+		}
+		if nums[mid] > query {
+			r = mid
 		}
 	}
-	if sub(index, mid, nums, sums) > limit {
-		return mid - index
+	if nums[mid] > query {
+		return mid - 1
 	}
-	return mid - index + 1
-}
-
-func sub(from, to int, nums, sums []int) int {
-	return sums[to] - sums[from] + nums[from]
+	return mid
 }
