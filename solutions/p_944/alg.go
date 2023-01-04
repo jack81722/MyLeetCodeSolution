@@ -2,8 +2,8 @@ package main
 
 func minDeletionSize(strs []string) int {
 	count := 0
-	for i, c := range strs[0] {
-		cur := byte(c)
+	for i := range strs[0] {
+		cur := strs[0][i]
 		for j := 1; j < len(strs); j++ {
 			if strs[j][i] < cur {
 				count++
