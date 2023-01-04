@@ -7,17 +7,11 @@ func minimumRounds(tasks []int) int {
 	}
 	round := 0
 	for _, v := range mp {
-		c := v / 3
-		r := v % 3
-		round += c
-		if r == 1 {
-			if c >= 1 {
-				round++
-				continue
-			}
+		if v == 1 {
 			return -1
 		}
-		if r == 2 {
+		round += v / 3
+		if v%3 > 0 {
 			round++
 		}
 	}
