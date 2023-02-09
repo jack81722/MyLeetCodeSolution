@@ -1,22 +1,21 @@
 package main
 
+// solution
 func jump(nums []int) int {
-	count := make([]int, len(nums))
+	curJump, farthestJump, jumps := 0, 0, 0
 	for i := 0; i < len(nums)-1; i++ {
-		for j := 1; j <= nums[i] && i+j < len(nums); j++ {
-			if count[i+j] == 0 {
-				count[i+j] = count[i] + 1
-				continue
+		if i+nums[i] > farthestJump {
+			farthestJump = i + nums[i]
+		}
+
+		if i == curJump {
+			jumps, curJump = jumps+1, farthestJump
+
+			if curJump >= len(nums)-1 {
+				return jumps
 			}
-			count[i+j] = min(count[i]+1, count[i+j])
 		}
 	}
-	return count[len(nums)-1]
-}
 
-func min(x, y int) int {
-	if x > y {
-		return y
-	}
-	return x
+	return 0
 }
