@@ -71,3 +71,13 @@ func insertLevel(arr []interface{}, i int) *TreeNode {
 	}
 	return root
 }
+
+func Inorder(root *TreeNode, do func(n *TreeNode)) {
+	if root.Left != nil {
+		Inorder(root.Left, do)
+	}
+	do(root)
+	if root.Right != nil {
+		Inorder(root.Right, do)
+	}
+}
