@@ -1,62 +1,31 @@
 package main
 
 func isValid(s string) bool {
-	stack := NewStack(1000)
+	stack := make([]rune, 0, 100)
 	for _, b := range s {
-		ss := string(b)
-		if ss == "(" || ss == "[" || ss == "{" {
-			stack.Push(ss)
+		if b == '(' || b == '[' || b == '{' {
+			stack = append(stack, b)
 			continue
 		}
-		if ss == ")" || ss == "]" || ss == "}" {
-			if !stack.HasNext() {
+		if b == ')' || b == ']' || b == '}' {
+			if len(stack) < 1 {
 				return false
 			}
-			if p := stack.Pop(); ss != pair[p] {
+			cur := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if b != pair[cur] {
 				return false
 			}
 		}
 	}
-	return !stack.HasNext()
+	return len(stack) < 1
 }
 
-var pair = map[string]string{
-	"(": ")",
-	")": "(",
-	"[": "]",
-	"]": "[",
-	"{": "}",
-	"}": "{",
-}
-
-type Stack struct {
-	count int
-	array []string
-}
-
-func NewStack(cap int) *Stack {
-	return &Stack{
-		count: 0,
-		array: make([]string, 0, cap),
-	}
-}
-
-func (s *Stack) HasNext() bool {
-	return s.count > 0
-}
-
-func (s *Stack) Pop() string {
-	result := s.array[s.count-1]
-	s.count--
-	return result
-}
-
-func (s *Stack) Push(p string) {
-	if len(s.array) > s.count {
-		s.array[s.count] = p
-		s.count++
-		return
-	}
-	s.array = append(s.array, p)
-	s.count++
+var pair = map[rune]rune{
+	'(': ')',
+	')': '(',
+	'[': ']',
+	']': '[',
+	'{': '}',
+	'}': '{',
 }
